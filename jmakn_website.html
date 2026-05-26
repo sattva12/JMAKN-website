@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JMAKN LLC — Cannabis Operations & Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest: #0C1F12;
+  --moss: #173520;
+  --lime: #C1F156;
+  --lime-dim: rgba(193,241,86,0.12);
+  --cream: #F0EBE0;
+  --muted: #7A9E7A;
+  --dark: #080F0A;
+  --panel: #111E14;
+  --panel2: #0F1C12;
+  --amber: #E8A832;
+  --white: #ffffff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--forest);
+  color: var(--cream);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1000; opacity: 0.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 3rem;
+  background: rgba(8,15,10,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(193,241,86,0.1);
+  transition: padding 0.3s;
+}
+nav.scrolled { padding: 0.75rem 3rem; }
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; letter-spacing: 0.12em; color: var(--lime);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cream); opacity: 0.5; font-size: 0.7em; letter-spacing: 0.06em; margin-left: 0.5rem; }
+.nav-links { display: flex; gap: 2.5rem; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted);
+  text-decoration: none; transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; right: 100%;
+  height: 1px; background: var(--lime); transition: right 0.25s;
+}
+.nav-links a:hover { color: var(--lime); }
+.nav-links a:hover::after { right: 0; }
+.nav-cta {
+  background: var(--lime); color: var(--dark);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 0.6rem 1.5rem;
+  text-decoration: none; transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: #d4ff6e; transform: translateY(-1px); }
+
+/* mobile hamburger */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--lime); transition: all 0.3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu {
+  display: none; position: fixed; inset: 0; top: 60px; z-index: 800;
+  background: rgba(8,15,10,0.97); backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 2.5rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 0.08em;
+  color: var(--cream); text-decoration: none; transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--lime); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  padding-top: 72px;
+  position: relative; overflow: hidden;
+}
+.hero-bg-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(90deg, rgba(193,241,86,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(193,241,86,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 6rem 4rem 6rem 3rem;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--lime);
+  margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block; width: 32px; height: 1px; background: var(--lime);
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  line-height: 0.92;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.03em;
+}
+.hero-title em {
+  display: block; color: var(--lime); font-style: normal;
+  text-shadow: 0 0 60px rgba(193,241,86,0.25);
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--muted); line-height: 1.75;
+  max-width: 460px; margin-bottom: 3rem;
+}
+.hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--lime); color: var(--dark);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 0.9rem 2rem;
+  text-decoration: none; transition: all 0.2s;
+  border: 2px solid var(--lime);
+}
+.btn-primary:hover { background: transparent; color: var(--lime); transform: translateY(-2px); }
+.btn-ghost {
+  color: var(--cream); font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 0.08em; text-decoration: none;
+  border-bottom: 1px solid rgba(240,235,224,0.3);
+  padding-bottom: 2px; transition: all 0.2s;
+}
+.btn-ghost:hover { color: var(--lime); border-color: var(--lime); }
+
+.hero-right {
+  background: var(--moss);
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: center;
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+  padding: 6rem 4rem 6rem 5rem;
+  position: relative;
+}
+.hero-proof-card {
+  background: var(--panel);
+  border: 1px solid rgba(193,241,86,0.15);
+  padding: 2.5rem;
+  width: 100%; max-width: 380px;
+}
+.proof-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--amber);
+  margin-bottom: 1.5rem;
+}
+.proof-label.after { color: var(--lime); margin-top: 2rem; }
+.proof-metric {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.proof-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem; line-height: 1;
+}
+.proof-num.before { color: var(--amber); }
+.proof-num.after { color: var(--lime); }
+.proof-unit { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.06em; }
+.proof-divider {
+  height: 1px; background: rgba(255,255,255,0.06);
+  margin: 0 -2.5rem 0;
+}
+.proof-result-bar {
+  margin-top: 2rem; padding: 1rem 1.5rem;
+  background: var(--lime-dim);
+  border-left: 3px solid var(--lime);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--lime);
+  line-height: 1.6;
+}
+
+/* ── STATS STRIP ── */
+.stats {
+  background: var(--dark);
+  border-top: 1px solid rgba(193,241,86,0.12);
+  border-bottom: 1px solid rgba(193,241,86,0.12);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  padding: 0;
+}
+.stat {
+  text-align: center; padding: 2.5rem 1rem;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.2s;
+}
+.stat:last-child { border-right: none; }
+.stat:hover { background: rgba(193,241,86,0.04); }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.2rem; color: var(--lime); line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-label {
+  font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* ── SECTION BASE ── */
+section { padding: 7rem 3rem; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--lime);
+  margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.section-eyebrow::before {
+  content: ''; display: block; width: 24px; height: 1px; background: var(--lime);
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 0.95; color: var(--cream);
+  margin-bottom: 1.25rem; letter-spacing: 0.03em;
+}
+.section-body {
+  font-size: 1.05rem; color: var(--muted);
+  max-width: 560px; line-height: 1.75;
+}
+
+/* ── PROOF ── */
+.proof-section { background: var(--panel); }
+.proof-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center; margin-top: 4rem;
+}
+.proof-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.proof-col { padding: 2.5rem; }
+.proof-col.before-col { background: var(--panel2); }
+.proof-col.after-col { background: var(--moss); }
+.proof-col-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.24em;
+  text-transform: uppercase; margin-bottom: 2rem;
+}
+.before-col .proof-col-label { color: var(--amber); }
+.after-col .proof-col-label { color: var(--lime); }
+.proof-item { margin-bottom: 1.75rem; }
+.proof-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.2rem; line-height: 1;
+}
+.before-col .proof-big { color: var(--amber); }
+.after-col .proof-big { color: var(--lime); }
+.proof-small {
+  font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem;
+  letter-spacing: 0.04em;
+}
+.proof-summary {
+  background: var(--lime); color: var(--dark);
+  padding: 1.75rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; line-height: 1.5;
+  margin-top: 2px;
+}
+.proof-context { }
+.proof-context p { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+.proof-context strong { color: var(--cream); font-weight: 500; }
+
+/* ── SERVICES ── */
+.services-section { background: var(--dark); }
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; margin-top: 4rem;
+}
+.service-card {
+  background: var(--panel);
+  padding: 2.25rem;
+  border-top: 2px solid transparent;
+  transition: border-color 0.25s, background 0.25s;
+  cursor: default;
+}
+.service-card:hover {
+  border-top-color: var(--lime);
+  background: var(--panel2);
+}
+.service-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem; color: var(--lime); opacity: 0.2;
+  line-height: 1; margin-bottom: 1rem;
+  transition: opacity 0.25s;
+}
+.service-card:hover .service-num { opacity: 0.5; }
+.service-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--cream);
+  margin-bottom: 0.75rem;
+}
+.service-body { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+/* ── ECOSYSTEM ── */
+.ecosystem-section { background: var(--forest); }
+.eco-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; margin-top: 4rem;
+}
+.eco-card {
+  padding: 2rem;
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: border-color 0.25s, transform 0.25s;
+}
+.eco-card:hover { transform: translateY(-4px); }
+.eco-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.eco-card.brain { background: #111E14; }
+.eco-card.brain::before { background: var(--lime); }
+.eco-card.brain:hover { border-color: rgba(193,241,86,0.3); }
+.eco-card.genetics { background: #0E1D12; }
+.eco-card.genetics::before { background: #4DAD6A; }
+.eco-card.genetics:hover { border-color: rgba(77,173,106,0.3); }
+.eco-card.build { background: #0C1825; }
+.eco-card.build::before { background: #5BC4E8; }
+.eco-card.build:hover { border-color: rgba(91,196,232,0.3); }
+.eco-card.retail { background: #160E28; }
+.eco-card.retail::before { background: #C084FC; }
+.eco-card.retail:hover { border-color: rgba(192,132,252,0.3); }
+
+.eco-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+.eco-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; letter-spacing: 0.04em;
+  margin-bottom: 0.25rem; line-height: 1;
+}
+.brain .eco-name { color: var(--lime); }
+.genetics .eco-name { color: #4DAD6A; }
+.build .eco-name { color: #5BC4E8; }
+.retail .eco-name { color: #C084FC; }
+.eco-url {
+  font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em;
+  text-decoration: none; margin-bottom: 1.25rem; display: block;
+  transition: color 0.2s;
+}
+.eco-url:hover { color: var(--lime); }
+.eco-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+.eco-chain {
+  margin-top: 3rem;
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; flex-wrap: wrap;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.eco-chain-item { padding: 0.6rem 1.25rem; border: 1px solid rgba(255,255,255,0.08); }
+.eco-chain-arrow { color: var(--lime); padding: 0 0.25rem; }
+
+/* ── TEAM ── */
+.team-section { background: var(--moss); }
+.team-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 1px; margin-top: 4rem;
+}
+.team-card {
+  background: var(--panel);
+  padding: 1.75rem 1.5rem;
+  transition: background 0.2s;
+}
+.team-card:hover { background: #141F16; }
+.team-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: 0.06em;
+  color: var(--lime); margin-bottom: 0.15rem;
+}
+.team-role {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 0.85rem;
+}
+.team-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
+
+/* ── MARKET SECTION ── */
+.market-section { background: var(--dark); }
+.market-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; margin-top: 4rem; align-items: start;
+}
+.market-stat-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+}
+.market-stat {
+  background: var(--panel); padding: 1.75rem;
+}
+.market-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem; color: var(--lime); line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.market-stat-label {
+  font-size: 0.72rem; color: var(--muted);
+  letter-spacing: 0.08em; line-height: 1.4;
+}
+.market-note {
+  background: var(--panel); border-left: 3px solid var(--lime);
+  padding: 1.75rem; margin-top: 1px;
+  grid-column: span 2;
+  font-size: 0.88rem; color: var(--muted); line-height: 1.65;
+}
+.market-note strong { color: var(--cream); font-weight: 500; }
+.market-text h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; color: var(--cream);
+  letter-spacing: 0.04em; margin-bottom: 1rem; line-height: 1;
+}
+.market-text p { font-size: 0.93rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+.market-cta {
+  display: inline-block; margin-top: 0.5rem;
+  background: transparent; color: var(--lime);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 0.75rem 1.5rem;
+  border: 1px solid var(--lime); text-decoration: none;
+  transition: all 0.2s;
+}
+.market-cta:hover { background: var(--lime); color: var(--dark); }
+
+/* ── CONTACT ── */
+.contact-section {
+  background: var(--forest);
+  text-align: center; padding: 9rem 3rem;
+  position: relative; overflow: hidden;
+}
+.contact-section::before {
+  content: 'JMAKN';
+  position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20rem; color: rgba(193,241,86,0.03);
+  letter-spacing: 0.05em; white-space: nowrap; pointer-events: none;
+  line-height: 1;
+}
+.contact-section .section-title { font-size: clamp(3rem, 7vw, 6rem); }
+.contact-section .section-body { margin: 0 auto 3rem; }
+.contact-actions {
+  display: flex; gap: 2rem; justify-content: center;
+  align-items: center; flex-wrap: wrap;
+}
+.contact-email {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem; letter-spacing: 0.06em;
+  color: var(--lime); text-decoration: none;
+  border-bottom: 2px solid rgba(193,241,86,0.3);
+  padding-bottom: 0.2rem; transition: border-color 0.2s;
+}
+.contact-email:hover { border-color: var(--lime); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 2rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem; letter-spacing: 0.12em; color: var(--lime);
+}
+.footer-companies {
+  font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em;
+}
+.footer-note { font-size: 0.7rem; color: rgba(122,158,122,0.5); }
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1000px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { clip-path: none; padding: 4rem 2rem; }
+  .hero-proof-card { max-width: 100%; }
+  .eco-grid { grid-template-columns: 1fr 1fr; }
+  .team-grid { grid-template-columns: repeat(3, 1fr); }
+  .proof-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .market-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  section { padding: 5rem 1.5rem; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .services-grid { grid-template-columns: 1fr; }
+  .eco-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+  .proof-cols { grid-template-columns: 1fr; }
+  .hero-left { padding: 5rem 1.5rem 3rem; }
+  footer { flex-direction: column; text-align: center; }
+}
+@media (max-width: 480px) {
+  .team-grid { grid-template-columns: 1fr; }
+  .market-stat-grid { grid-template-columns: 1fr; }
+  .market-note { grid-column: span 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#home" class="nav-logo">JMAKN <span>LLC</span></a>
+  <div class="nav-links">
+    <a href="#proof">The Proof</a>
+    <a href="#services">Services</a>
+    <a href="#ecosystem">Ecosystem</a>
+    <a href="#team">Team</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">Schedule Audit</a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#proof" onclick="closeMenu()">The Proof</a>
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#ecosystem" onclick="closeMenu()">Ecosystem</a>
+  <a href="#team" onclick="closeMenu()">Team</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-lines"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow reveal">Cannabis Operations · Consulting · Build</div>
+    <h1 class="hero-title reveal reveal-delay-1">
+      We build the<br>
+      <em>operating system</em><br>
+      facilities are missing.
+    </h1>
+    <p class="hero-sub reveal reveal-delay-2">
+      Most cannabis facilities bleed money through bloated headcount, METRC paralysis, and the wrong genetics. We fix that — and we stay until the numbers prove it.
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="#contact" class="btn-primary">Schedule an Audit</a>
+      <a href="#proof" class="btn-ghost">See the proof →</a>
+    </div>
+  </div>
+  <div class="hero-right reveal">
+    <div class="hero-proof-card">
+      <div class="proof-label">Before</div>
+      <div class="proof-metric">
+        <div class="proof-num before">30</div>
+        <div class="proof-unit">Employees on payroll</div>
+      </div>
+      <div class="proof-metric">
+        <div class="proof-num before">15K</div>
+        <div class="proof-unit">Lbs fresh frozen / year</div>
+      </div>
+      <div class="proof-metric">
+        <div class="proof-num before">High</div>
+        <div class="proof-unit">Labor cost per pound</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-label after">After · JMAKN</div>
+      <div class="proof-metric">
+        <div class="proof-num after">10</div>
+        <div class="proof-unit">Employees — 66% reduction</div>
+      </div>
+      <div class="proof-metric">
+        <div class="proof-num after">36K</div>
+        <div class="proof-unit">Lbs fresh frozen — 140% increase</div>
+      </div>
+      <div class="proof-metric">
+        <div class="proof-num after">Low</div>
+        <div class="proof-unit">Labor cost per pound</div>
+      </div>
+      <div class="proof-result-bar">
+        Same facility. Same canopy. Same square footage.<br>
+        140% more output · 66% less labor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats">
+  <div class="stat reveal"><div class="stat-num">$100M+</div><div class="stat-label">Projects managed</div></div>
+  <div class="stat reveal reveal-delay-1"><div class="stat-num">500K+</div><div class="stat-label">Sq ft built</div></div>
+  <div class="stat reveal reveal-delay-2"><div class="stat-num">6+</div><div class="stat-label">States licensed</div></div>
+  <div class="stat reveal reveal-delay-3"><div class="stat-num">40+</div><div class="stat-label">Years combined experience</div></div>
+</div>
+
+<!-- PROOF -->
+<section class="proof-section" id="proof">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">The case study</div>
+    <h2 class="section-title reveal reveal-delay-1">One farm.<br>One engagement.<br>Real numbers.</h2>
+    <div class="proof-layout">
+      <div>
+        <div class="proof-cols reveal">
+          <div class="proof-col before-col">
+            <div class="proof-col-label">Before</div>
+            <div class="proof-item"><div class="proof-big">30</div><div class="proof-small">Employees on payroll</div></div>
+            <div class="proof-item"><div class="proof-big">15,000</div><div class="proof-small">Lbs fresh frozen / year</div></div>
+            <div class="proof-item"><div class="proof-big">100K</div><div class="proof-small">Sq ft canopy</div></div>
+            <div class="proof-item"><div class="proof-big">High</div><div class="proof-small">Labor cost per pound</div></div>
+          </div>
+          <div class="proof-col after-col">
+            <div class="proof-col-label">After · JMAKN</div>
+            <div class="proof-item"><div class="proof-big">10</div><div class="proof-small">Employees — 66% reduction</div></div>
+            <div class="proof-item"><div class="proof-big">36,000</div><div class="proof-small">Lbs fresh frozen — 140% increase</div></div>
+            <div class="proof-item"><div class="proof-big">100K</div><div class="proof-small">Same facility. Same canopy.</div></div>
+            <div class="proof-item"><div class="proof-big">Low</div><div class="proof-small">Lowest labor cost per pound</div></div>
+          </div>
+        </div>
+        <div class="proof-summary reveal">
+          140% output increase · 66% labor reduction · Same facility, same square footage.
+          We don't sell projections. We delivered this and can document every step.
+        </div>
+      </div>
+      <div class="proof-context reveal reveal-delay-2">
+        <p>Labor is the <strong>#1 controllable cost</strong> in cannabis. Most operators aren't controlling it. They're running 30 people for work that requires 10, using genetics that demand constant attention, and running compliance manually while their plants wait.</p>
+        <p>We walked into a 100,000 sq ft facility running at 40% of its potential. Eighteen months later: <strong>same building, same canopy, 140% more product, two-thirds fewer people.</strong></p>
+        <p>We don't hand over a PDF and leave. We stay until the numbers we promised are on the screen. That's the JMAKN difference.</p>
+        <a href="#contact" class="btn-primary" style="margin-top: 1rem; display: inline-block;">Get your audit</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">What we do</div>
+    <h2 class="section-title reveal reveal-delay-1">Six services.<br>One outcome.</h2>
+    <p class="section-body reveal reveal-delay-2">Every engagement ends the same way: your facility runs better than it did before we arrived.</p>
+    <div class="services-grid" style="margin-top: 4rem;">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <div class="service-title">Operational Audit</div>
+        <div class="service-body">We analyze your METRC data, labor logs, and plant movement. We show you exactly where you're losing money — before we charge to fix it. This is our entry point and our proof of value.</div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">02</div>
+        <div class="service-title">Process Engineering</div>
+        <div class="service-body">SOPs, cross-training schedules, harvest workflows, tag-to-table optimization. Turning tribal knowledge into a repeatable, engineered system that survives staff turnover.</div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">03</div>
+        <div class="service-title">Genetics Reset</div>
+        <div class="service-body">Wild-bred genetics designed for uniform height, resilience, and minimal touch. The right plant requires a fraction of the labor of the wrong one. Via Northern Sōl Farms.</div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">04</div>
+        <div class="service-title">Tech Integration</div>
+        <div class="service-body">Scanners, taggers, custom METRC workflows. Minimize computer time. Maximize time on plants. Compliance without the paralysis that kills productivity.</div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">05</div>
+        <div class="service-title">Facility Build</div>
+        <div class="service-body">When the audit finds an infrastructure bottleneck, our build arm executes the fix. One contract. One team. No finger-pointing between vendors. Design through CO under one roof.</div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-num">06</div>
+        <div class="service-title">Ongoing Management</div>
+        <div class="service-body">For new market operators: full facility management. We build it, run it, and optimize it. You hold the license. We deliver the numbers. Available for Virginia and emerging markets.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section class="ecosystem-section" id="ecosystem">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">The ecosystem</div>
+    <h2 class="section-title reveal reveal-delay-1">Four companies.<br>One supply chain.</h2>
+    <p class="section-body reveal reveal-delay-2">Seed to sale. No other consulting firm walks in with genetics, a licensed build arm, and a live operating dispensary behind them.</p>
+    <div class="eco-grid">
+      <div class="eco-card brain reveal">
+        <div class="eco-tag">The Brain</div>
+        <div class="eco-name">JMAKN LLC</div>
+        <div class="eco-desc">Consulting, audits, SOPs, METRC workflow, project management, and licensing strategy. The front door for every engagement. You pay JMAKN. We coordinate everything else.</div>
+      </div>
+      <div class="eco-card genetics reveal reveal-delay-1">
+        <div class="eco-tag">Genetics & Cultivation</div>
+        <div class="eco-name">Northern Sōl Farms</div>
+        <a href="https://northernsolfarms.com" target="_blank" class="eco-url">northernsolfarms.com ↗</a>
+        <div class="eco-desc">Wild-bred proprietary genetics. Nearly a decade off-grid in Downeast Maine. Sun-grown, living soil. The plant science that makes the whole system work.</div>
+      </div>
+      <div class="eco-card build reveal reveal-delay-2">
+        <div class="eco-tag">Engineering & Build</div>
+        <div class="eco-name">Sattva Tech</div>
+        <a href="https://sattvatech.com" target="_blank" class="eco-url">sattvatech.com ↗</a>
+        <div class="eco-desc">Mechanical engineering, facility design and construction, equipment sourcing, security systems, and infrastructure. MA Unrestricted Construction Supervisor License.</div>
+      </div>
+      <div class="eco-card retail reveal reveal-delay-3">
+        <div class="eco-tag">Retail & Distribution</div>
+        <div class="eco-name">Your Coastal Connection</div>
+        <a href="https://yourcoastalconnection.me" target="_blank" class="eco-url">yourcoastalconnection.me ↗</a>
+        <div class="eco-desc">40 years of cannabis experience. Licensed Maine adult-use dispensary. Full product line. High Times featured. The industry credibility anchor for every engagement.</div>
+      </div>
+    </div>
+    <div class="eco-chain reveal">
+      <div class="eco-chain-item">Genetics & Cultivation</div>
+      <div class="eco-chain-arrow">→</div>
+      <div class="eco-chain-item">Build & Infrastructure</div>
+      <div class="eco-chain-arrow">→</div>
+      <div class="eco-chain-item">Consulting & Operations</div>
+      <div class="eco-chain-arrow">→</div>
+      <div class="eco-chain-item">Retail & Distribution</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" id="team">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">The team</div>
+    <h2 class="section-title reveal reveal-delay-1">People who stay<br>until it works.</h2>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-name">Matt</div>
+        <div class="team-role">CEO · Genetics & Cultivation</div>
+        <div class="team-desc">Nearly a decade off-grid in Downeast Maine. Wild-bred proprietary genetics. 100+ acres cultivated. The client relationship lead — meets people, gets the business. Founder of Northern Sōl Farms.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-name">Atul</div>
+        <div class="team-role">COO · CFO · Engineering & Build</div>
+        <div class="team-desc">25+ years mechanical engineering and construction. Designed and built cannabis facilities across MA, RI, DE, MD. Directly executed the 30→10 / 15K→36K transformation. MA Unrestricted CSL. Owner of Sattva.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-name">King Earl Bishop</div>
+        <div class="team-role">Partner · Retail & Industry</div>
+        <div class="team-desc">40 years of cannabis experience. Licensed Maine dispensary owner. High Times featured. The most credentialed operator in the room — every time. Owner of Your Coastal Connection.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-name">Nick</div>
+        <div class="team-role">Partner · Field Operations</div>
+        <div class="team-desc">The execution engine. Gets every project delivered on time, on site, on budget. Can be trained to any standard and will outwork everyone on the field.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-4">
+        <div class="team-name">Jon</div>
+        <div class="team-role">Partner · Legal</div>
+        <div class="team-desc">Attorney and equity partner. Handles all legal work for the JMAKN ecosystem with skin in the game. Not outside counsel — a partner who's accountable to the outcome.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET OPPORTUNITY -->
+<section class="market-section" id="market">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Market opportunity</div>
+    <h2 class="section-title reveal reveal-delay-1">New markets.<br>Right now.</h2>
+    <div class="market-grid">
+      <div>
+        <div class="market-stat-grid">
+          <div class="market-stat reveal">
+            <div class="market-stat-num">5</div>
+            <div class="market-stat-label">Virginia Tier V licenses available statewide</div>
+          </div>
+          <div class="market-stat reveal reveal-delay-1">
+            <div class="market-stat-num">35K</div>
+            <div class="market-stat-label">Max canopy sq ft — Virginia Tier V</div>
+          </div>
+          <div class="market-stat reveal reveal-delay-2">
+            <div class="market-stat-num">Jan '27</div>
+            <div class="market-stat-label">Virginia retail sales begin</div>
+          </div>
+          <div class="market-stat reveal reveal-delay-3">
+            <div class="market-stat-num">MN · OH</div>
+            <div class="market-stat-label">Newest open rec markets — 2024–25</div>
+          </div>
+          <div class="market-note reveal">
+            <strong>Virginia Impact Licensee status</strong> — If your ownership group qualifies on 4 of 7 equity criteria, you get priority lottery access to those 5 licenses. JMAKN knows the criteria, the application requirements, and the timeline. We can help you evaluate your eligibility and prepare before the window closes.
+          </div>
+        </div>
+      </div>
+      <div class="market-text reveal reveal-delay-2">
+        <h3>We don't just consult existing operations. We walk operators into brand new markets.</h3>
+        <p>JMAKN tracks every legal state — canopy tiers, METRC requirements, license costs, social equity criteria, application timelines. When a new market opens, we already know the rules.</p>
+        <p>Our management model is built for this: you find the right license holder, JMAKN manages the application, Sattva builds the facility, Northern Sōl sets up the genetics, and we run operations under a management agreement. You hold the license. We deliver the numbers.</p>
+        <p>Virginia applications open September 2026. The window is narrow. The competition is real. JMAKN is already tracking this.</p>
+        <a href="#contact" class="market-cta">Talk to us about Virginia</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-inner" style="position: relative; z-index: 2;">
+    <div class="section-eyebrow reveal" style="justify-content: center;">Get started</div>
+    <h2 class="section-title reveal reveal-delay-1">Ready to build.</h2>
+    <p class="section-body reveal reveal-delay-2">We don't hand over a PDF and leave. We stay until the numbers we promised are on the screen. Start with an audit.</p>
+    <div class="contact-actions reveal reveal-delay-3">
+      <a href="mailto:info@jmakn.com" class="contact-email">info@jmakn.com</a>
+      <a href="#services" class="btn-primary">See our services</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">JMAKN LLC</div>
+  <div class="footer-companies">Northern Sōl Farms · Sattva Tech · Your Coastal Connection</div>
+  <div class="footer-note">© 2026 JMAKN LLC. All rights reserved.</div>
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(r => observer.observe(r));
+
+// Hero elements visible immediately
+document.querySelectorAll('.hero .reveal').forEach(el => {
+  setTimeout(() => el.classList.add('visible'), 100);
+});
+
+// Nav shrink on scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Hamburger
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMenu() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+</body>
+</html>
